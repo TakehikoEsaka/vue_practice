@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "gitlab",
+			"path": "."
+		}
+	],
+	"settings": {
+		"window.zoomLevel": 4 // 拡大倍率をここで指定
+	},
+	"extensions": { // 拡張機能関連の設定．RemoteやLocalに限らず必要な拡張機能をここに書いて管理出来る．
+        "recommendations": [ 
+			// 共同開発時に共通で使ってほしいものはここに書く
+            "ms-python.python"
+        ]
+	},
+}
