@@ -3,21 +3,12 @@ version: '3.3'
 services:
   app:
     build: ./app
-    container_name: gitlab_app
+    container_name: vue_practice
     ports:
-      - "5001:5000"
+      - "5003:5000"
     volumes:
       - ./app/:/home/app/
-      # ★? - ./migrations:/usr/src/app/migrations
-    networks:
-      gitlab_net:
-        ipv4_address: 172.36.0.2
+    env_file: 
+      - .env
     restart: always
-
-networks:
-  gitlab_net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.36.0.0/24
+    command: "flask run --host 0.0.0.0 --debugger --reload --port 5000"

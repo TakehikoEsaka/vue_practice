@@ -11,7 +11,15 @@ def login():
     titile = "Login",
     err=False,
     message = "IDとpassを入力",
-    id="") # templatesフォルダからの相対パスを記入
+    id="") 
+# templatesフォルダからの相対パスを記入sa
+# @app.route('/logout')
+# def login():
+#     return render_template("login.html", 
+#     titile = "Login",
+#     err=False,
+#     message = "IDとpassを入力",
+#     id="") # templatesフォルダからの相対パスを記入
 
 # @app.route("/list", methods=["POST", "GET"])
 # def display(): #
