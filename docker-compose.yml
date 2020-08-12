@@ -1,14 +1,13 @@
-version: '3.3'
+version: '2.3'
 
 services:
-  app:
-    build: ./app
-    container_name: vue_practice
-    ports:
-      - "5003:5000"
-    volumes:
-      - ./app/:/home/app/
-    env_file: 
+  frontend:
+    build: .
+    env_file:
       - .env
-    restart: always
-    command: "flask run --host 0.0.0.0 --debugger --reload --port 5000"
+    ports:
+      - $FRONTEND_PORT:8080
+    volumes:
+      - ./:/app
+    #command: /bin/sh -c "yarn install; yarn serve --https"
+    command: /bin/sh -c "while :; do sleep 1000; done"
