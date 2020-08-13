@@ -1,10 +1,13 @@
 <template>
-  <div class="hello">
+  <div class="top-container">
     <h1>{{ msg }}</h1>
     <h2 v-show="showText">{{ text }}</h2>
     <button v-on:click="toggle">おしてね</button>
+    <p>{{inputed_msg}}</p>
+    <input type="text" v-model="inputed_msg">
   </div>
 </template>
+
 
 <script>
 export default {
@@ -12,6 +15,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      inputed_msg: "data binding test",
       text: "Hi TAKE",
       showText: false
     }
