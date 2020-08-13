@@ -3,31 +3,32 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Scene1 />
   </div>
 </template>
 
 // ここにjavascriptを記載
 // 本で言う所のコンテナのテンプレートに対応
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Scene1 from './components/Scene1.vue'
 
 export default {
-  name: 'App',
+  name: 'App', // コンポーネントにも名前がつけれる.exportはこれでするのでimportする時は合わせる必要あり
   components: {
-    HelloWorld
+    Scene1
   }
 }
 </script>
 
 // ここにcssを記載
+// vueごとにcssを管理出来る(コンポーネントスコープCSS)から便利
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: blue;
   margin-top: 60px;
 }
 </style>
