@@ -31,12 +31,16 @@ export default {
       }
   },
   created () {
-    fetch("https://gitlab.com/api/v4/projects", {
-      private_token: "JdykVLstfRuwVC8KLm8s"
+    fetch("https://gitlab.com/api/v4/users/2904302/projects", {
+      private_token: "JdykVLstfRuwVC8KLm8s",
       })
+    // .then( data => console.log(data))
     .then(response => {
-      (this.info = response.json())
+      return response.json()
     })
+    .then(data => {
+      this.info = data
+      }) // then で data にアクセス
     .catch(err => {
       (this.errored = true), (this.error = err);
     })
