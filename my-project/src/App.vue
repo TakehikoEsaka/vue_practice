@@ -1,3 +1,5 @@
+// ここにhtmlを記載
+// 本で言う所のvue.jsコンテナに対応
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
@@ -5,6 +7,8 @@
   </div>
 </template>
 
+// ここにjavascriptを記載
+// 本で言う所のコンテナのテンプレートに対応
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 
@@ -16,6 +20,7 @@ export default {
 }
 </script>
 
+// ここにcssを記載
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
