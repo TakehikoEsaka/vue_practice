@@ -21,9 +21,11 @@
     <p>郵便番号 10504の都市は</p>
     <p>{{postcode}}</p>
 
+    <!-- gitlabAPI利用例 -->
+    <p>gitlab project</p>
+    <p>{{info}}</p>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -34,7 +36,8 @@ export default {
       inputed_msg: "data binding test",
       text: "Hi TAKE",
       showText: false,
-      postcode: ""
+      postcode: "",
+      info:""
     }
   },
   methods: {
@@ -47,18 +50,24 @@ export default {
       }
   },
   created () {
-    fetch('http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US')
+    // http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US //postalcodeを取得するようのAPI
+    // https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s //gitlabのコード取得するようのAPI
+    // fetchによる記述
+    fetch("https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s")
     .then( response => {
       return response.json()
     })
     .then( json => {
-      this.postcode = json.postalcodes[0].adminName1
+      // this.postcode = json.postalcodes[0].adminName1
+      this.postcode = json[0].name
     })
     .catch( (err) => {
       this.psotcode = err // エラー処理
     });
   }
 }
+// console.log(this.info);
+
 </script>
 
 <style scoped>
