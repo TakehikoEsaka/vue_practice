@@ -6,7 +6,7 @@
     <div v-else>
       <div v-for="_info in info" :key="_info.id">
         <h2>{{_info.id}} {{_info.name}}</h2>
-        <!-- <Milestone :project_id="_info.id"/> -->
+        <Milestone :project_id="_info.id"/>
     </div>
     </div>
 
@@ -15,13 +15,13 @@
 
 <script>
 // import axios from 'axios'
-// import Milestone from './Milestone.vue'
+import Milestone from './Milestone.vue'
 
 export default {
   name: 'Projects',
-  // components: {
-  //   Milestone
-  // },
+  components: {
+    Milestone
+  },
   data () {
       return {
           info: null,
@@ -32,15 +32,15 @@ export default {
   },
   created () {
     fetch("https://gitlab.com/api/v4/users/2904302/projects", {
-      private_token: "JdykVLstfRuwVC8KLm8s",
+      private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN,
       })
-    // .then( data => console.log(data))
     .then(response => {
       return response.json()
     })
     .then(data => {
       this.info = data
       }) // then で data にアクセス
+    // .then( data => console.log(data))
     .catch(err => {
       (this.errored = true), (this.error = err);
     })

@@ -1,77 +1,79 @@
 <template>
-  <div class="top-container">
-    <h1>{{ msg }}</h1>
-    <h2 v-show="showText">{{ text }}</h2>
-    
-    <!-- トグルの実装 -->
-    <button v-on:click="toggle">おしてね</button>
-    
-    <!-- データバインディング用 -->
-    <!-- 属性内では{{}}を使わなくても変数を参照出来る -->
-    <p v-if="inputed_msg.length > 0">
-    {{inputed_msg}}
-    </p>
-    <p v-else>
-      no-text
-    </p>
-    <input type="text" v-model="inputed_msg">
-    <button @click="clear_inputed_msg()">clear</button>
-    
-    <!-- WebAPI利用例 -->
-    <p>郵便番号 10504の都市は</p>
-    <p>{{postcode}}</p>
-
-    <!-- gitlabAPI利用例 -->
-    <p>gitlab project</p>
-    <p>{{info}}</p>
+  <div id="milestones">
+    <p v-if="errored" v-cloak>{{ error }}</p>
+    <p v-if="loading" v-cloak>Loading...</p>
+    <div v-else>
+      <ul>
+        <div v-for="_info in info" :key="_info.id">
+          <h3>{{_info.title}}</h3>
+          <Issue :project_id="project_id" 
+                 :milestone_id="_info.id"
+          />
+        </div>
+        <!-- <li v-for="_info in info" :key="_info.id" v-cloak>
+          <h3>{{_info.title}}</h3>
+          <Issue :project_id="project_id" 
+                 :milestone_id="_info.id"
+          />
+        </li> -->
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import Issue from './Issue.vue'
+
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      inputed_msg: "data binding test",
-      text: "Hi TAKE",
-      showText: false,
-      postcode: "",
-      info:""
-    }
+  name: 'Milestone',
+  components: {
+    Issue
   },
-  methods: {
-      toggle: function() { //関数名がtoggle
-        this.showText = !this.showText //dataで定義したプロパティの取得はthisで行う
-        // vueでのthisとアロー関数でのthisの意味合いはことなってくる．アロー関数は使わないほうがいいみたい．
-      },
-      clear_inputed_msg() {
-        this.inputed_msg = ""
+  props: {
+    project_id: Number
+  },
+  data () {
+      return {
+          info: null,
+          loading: true,
+          errored: false,
+          error: null,
       }
   },
   created () {
-    // http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US //postalcodeを取得するようのAPI
-    // https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s //gitlabのコード取得するようのAPI
-    // fetchによる記述
-    fetch("https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s")
-    .then( response => {
+    fetch("https://gitlab.com/api/v4/projects/20502241/milestones", {
+    private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN
+    })
+    .then(response => {
       return response.json()
     })
-    .then( json => {
-      // this.postcode = json.postalcodes[0].adminName1
-      this.postcode = json[0].name
+    .then(data => {
+      this.info = data
     })
-    .catch( (err) => {
-      this.psotcode = err // エラー処理
-    });
-  }
+    .catch(err => {
+      (this.errored = true), (this.error = err);
+    })
+    .finally(() => (this.loading = false))
+  },
 }
-// console.log(this.info);
-
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-} 
+h3 {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+#milestones {
+  width: 100%;
+}
 </style>

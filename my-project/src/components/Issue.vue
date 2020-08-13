@@ -1,77 +1,89 @@
 <template>
-  <div class="top-container">
-    <h1>{{ msg }}</h1>
-    <h2 v-show="showText">{{ text }}</h2>
-    
-    <!-- トグルの実装 -->
-    <button v-on:click="toggle">おしてね</button>
-    
-    <!-- データバインディング用 -->
-    <!-- 属性内では{{}}を使わなくても変数を参照出来る -->
-    <p v-if="inputed_msg.length > 0">
-    {{inputed_msg}}
-    </p>
-    <p v-else>
-      no-text
-    </p>
-    <input type="text" v-model="inputed_msg">
-    <button @click="clear_inputed_msg()">clear</button>
-    
-    <!-- WebAPI利用例 -->
-    <p>郵便番号 10504の都市は</p>
-    <p>{{postcode}}</p>
-
-    <!-- gitlabAPI利用例 -->
-    <p>gitlab project</p>
-    <p>{{info}}</p>
+  <div>
+    <p v-if="errored" v-cloak>{{ error }}</p>
+    <p v-if="loading" v-cloak>Loading...</p>
+    <div v-else>
+        <table class="issue_table">
+            <thead>
+            <tr>
+                <th class="id">id</th>
+                <th class="title">title</th>
+                <th class="state">state</th>
+                <th class="start">start</th>
+                <th class="due_date">due_date</th>
+                <th class="assignee">assignee</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="_info in info" v-bind:key="_info.id">
+                <td> #{{ _info.id }} </td>
+                <td> {{ _info.title }} </td>
+                <td v-if="_info.state=='closed'"> &#x2714; </td>
+                <td v-else> </td>
+                <td> {{ _info.start_date }} </td>
+                <td> {{ _info.due_date }} </td>
+                <td v-if="_info.assignees.length > 0">{{ _info.assignees[0].name }}</td>
+            </tr>
+            </tbody>
+    </table>
+    </div>
   </div>
 </template>
 
 <script>
+// import axios from 'axios'
+
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      inputed_msg: "data binding test",
-      text: "Hi TAKE",
-      showText: false,
-      postcode: "",
-      info:""
-    }
+  name: 'Issue',
+  props: {
+    project_id: Number,
+    milestone_id: Number,
   },
-  methods: {
-      toggle: function() { //関数名がtoggle
-        this.showText = !this.showText //dataで定義したプロパティの取得はthisで行う
-        // vueでのthisとアロー関数でのthisの意味合いはことなってくる．アロー関数は使わないほうがいいみたい．
-      },
-      clear_inputed_msg() {
-        this.inputed_msg = ""
+  data () {
+      return {
+          info: null,
+          loading: true,
+          errored: false,
+          error: null,
       }
   },
   created () {
-    // http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US //postalcodeを取得するようのAPI
-    // https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s //gitlabのコード取得するようのAPI
-    // fetchによる記述
-    fetch("https://gitlab.com/api/v4/projects/8725239/repository/branches?private_token=JdykVLstfRuwVC8KLm8s")
-    .then( response => {
-      return response.json()
+    fetch("https://gitlab.com/api/v4/projects/20502241/milestones/1406174/issues", {
+      private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN,
     })
-    .then( json => {
-      // this.postcode = json.postalcodes[0].adminName1
-      this.postcode = json[0].name
+    .then(response => {
+      return response.data
     })
-    .catch( (err) => {
-      this.psotcode = err // エラー処理
-    });
-  }
+    .then(data => {
+      this.info = data
+      })    
+    .catch(err => {
+      (this.errored = true), (this.error = err);
+    })
+    .finally(() => (this.loading = false))
+  },
 }
-// console.log(this.info);
-
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-} 
+h4 {
+  margin: 40px 0 0;
+}
+a {
+  color: #42b983;
+}
+table {
+  table-layout: fixed;
+  width: 60%;
+}
+.title {
+  width: 60%;
+}
+.id, .state{
+  width: 5%;
+}
+td {
+  text-align: center;
+}
 </style>
