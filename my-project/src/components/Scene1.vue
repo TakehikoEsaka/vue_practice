@@ -15,7 +15,11 @@
       no-text
     </p>
     <input type="text" v-model="inputed_msg">
-    <button @click="clear()">clear</button>
+    <button @click="clear_inputed_msg()">clear</button>
+    
+    <!-- WebAPI利用例 -->
+    <p>郵便番号 10504の都市は</p>
+    <p>{{postcode}}</p>
 
   </div>
 </template>
@@ -29,7 +33,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       inputed_msg: "data binding test",
       text: "Hi TAKE",
-      showText: false
+      showText: false,
+      postcode: ""
     }
   },
   methods: {
@@ -37,9 +42,21 @@ export default {
         this.showText = !this.showText //dataで定義したプロパティの取得はthisで行う
         // vueでのthisとアロー関数でのthisの意味合いはことなってくる．アロー関数は使わないほうがいいみたい．
       },
-      clear() {
+      clear_inputed_msg() {
         this.inputed_msg = ""
       }
+  },
+  created () {
+    fetch('http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US')
+    .then( response => {
+      return response.json()
+    })
+    .then( json => {
+      this.postcode = json.postalcodes[0].adminName1
+    })
+    .catch( (err) => {
+      this.psotcode = err // エラー処理
+    });
   }
 }
 </script>
