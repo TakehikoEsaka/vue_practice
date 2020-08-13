@@ -4,20 +4,20 @@
   <div id="app">
     <myheader></myheader>
     <img alt="Vue logo" src="./assets/logo.png">
-    <Scene1 />
+    <Projects />
   </div>
 </template>
 
 // ここにjavascriptを記載
 // 本で言う所のコンテナのテンプレートに対応
 <script>
-import Scene1 from './components/Scene1.vue'
+import Projects from './components/Projects.vue'
 import myheader from './components/myheader.vue'
 
 export default {
   name: 'App', // コンポーネントにも名前がつけれる.exportはこれでするのでimportする時は合わせる必要あり
   components: {
-    Scene1,
+    Projects,
     myheader
   }
 }
