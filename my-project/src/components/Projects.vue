@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import Milestone from './Milestone.vue'
 
 export default {
@@ -31,22 +31,26 @@ export default {
       }
   },
   created () {
-    fetch("https://gitlab.com/api/v4/users/2904302/projects", {
-      private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN,
-      })
+    // axios.defaults.withCredentials = true //これをつけると怒られてしまう
+    axios
+    .get('https://gitlab.com/api/v4/users/2904302/projects', {
+      "params" : {
+        sort: "asc"
+      }
+    })
     .then(response => {
-      return response.json()
+      // APIサーバーでresの部分が返ってくる. (mock.jsを参考にすると分かりやすい)
+      // chromeのdev toolのconsole画面で確認出来る.
+      console.log(response.headers) // resのheadersプロパティが返される
+      console.log(response.data) // resのdataプロパティが返される
+      console.log(response.status) // resのstatusプロパティが返される．正常なら200が返ってくる
+      this.info = response.data
     })
-    .then(data => {
-      this.info = data
-      }) // then で data にアクセス
-    // .then( data => console.log(data))
     .catch(err => {
-      (this.errored = true), (this.error = err);
+      this.errored = true, 
+      this.error = err;
     })
-    .finally(() => {
-      (this.loading = false)
-    })
+    .finally(() => (this.loading = false))
   },
 }
 </script>

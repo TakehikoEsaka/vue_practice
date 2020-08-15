@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Issue from './Issue.vue'
 
 export default {
@@ -41,17 +42,23 @@ export default {
       }
   },
   created () {
-    fetch("https://gitlab.com/api/v4/projects/20502241/milestones", {
-    private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN
+    axios
+    .get('https://gitlab.com/api/v4/projects/20502241/milestones', {
+      "params" : {
+        private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN,
+      }
     })
     .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      this.info = data
+      // APIサーバーでresの部分が返ってくる. (mock.jsを参考にすると分かりやすい)
+      // chromeのdev toolのconsole画面で確認出来る.
+      console.log(response.headers) // resのheadersプロパティが返される
+      console.log(response.data) // resのdataプロパティが返される
+      console.log(response.status) // resのstatusプロパティが返される．正常なら200が返ってくる
+      this.info = response.data
     })
     .catch(err => {
-      (this.errored = true), (this.error = err);
+      this.errored = true, 
+      this.error = err;
     })
     .finally(() => (this.loading = false))
   },
