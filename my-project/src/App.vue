@@ -4,6 +4,7 @@
   <div id="app">
     <myheader></myheader>
     <img alt="Vue logo" src="./assets/logo.png">
+    <Edits />
     <Projects />
   </div>
 </template>
@@ -13,10 +14,12 @@
 <script>
 import Projects from './components/Projects.vue'
 import myheader from './components/myheader.vue'
+import Edits from './components/Edits.vue'
 
 export default {
   name: 'App', // コンポーネントにも名前がつけれる.exportはこれでするのでimportする時は合わせる必要あり
   components: {
+    Edits,
     Projects,
     myheader
   }
