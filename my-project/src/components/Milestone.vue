@@ -10,12 +10,10 @@
                  :milestone_id="_info.id"
           />
         </div>
-        <!-- <li v-for="_info in info" :key="_info.id" v-cloak>
-          <h3>{{_info.title}}</h3>
-          <Issue :project_id="project_id" 
-                 :milestone_id="_info.id"
-          />
-        </li> -->
+
+        <!-- 追加ボタン設置 -->
+        <Addissue />
+
       </ul>
     </div>
   </div>
@@ -24,11 +22,13 @@
 <script>
 import axios from 'axios'
 import Issue from './Issue.vue'
+import Addissue from "./Addissue.vue"
 
 export default {
   name: 'Milestone',
   components: {
-    Issue
+    Issue,
+    Addissue
   },
   props: {
     project_id: Number
