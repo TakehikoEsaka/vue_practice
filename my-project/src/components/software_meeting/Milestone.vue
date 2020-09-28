@@ -3,15 +3,14 @@
     <p v-if="errored" v-cloak>{{ error }}</p>
     <p v-if="loading" v-cloak>Loading...</p>
     <div v-else>
-      <ul>
+      <ul> <!-- ulはリストを作る要素v-forの外側に書く -->
         <div v-for="_info in info" :key="_info.id">
           <h3>{{_info.title}}</h3>
+          <!-- 親 -> 子コンポーネントへのデータのやり取りはv-bindを使う -->
           <Issue :project_id="project_id" 
-                 :milestone_id="_info.id"
-          />
+                 :milestone_id="_info.id" />
         </div>
 
-        <!-- 追加ボタン設置 -->
         <Addissue />
 
       </ul>
@@ -31,7 +30,7 @@ export default {
     Addissue
   },
   props: {
-    project_id: Number
+    project_id: Number //これは親->自分へのdataの受け渡し用で使われる．this.project_idで参照可能
   },
   data () {
       return {
@@ -45,12 +44,11 @@ export default {
     axios
     .get('https://gitlab.com/api/v4/projects/20502241/milestones', {
       "params" : {
-        private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN,
+        private_token: process.env.VUE_APP_GITLAB_PRIVATE_TOKEN, //環境変数を使うにはこのように記載する
       }
     })
     .then(response => {
       // APIサーバーでresの部分が返ってくる. (mock.jsを参考にすると分かりやすい)
-      // chromeのdev toolのconsole画面で確認出来る.
       console.log(response.headers) // resのheadersプロパティが返される
       console.log(response.data) // resのdataプロパティが返される
       console.log(response.status) // resのstatusプロパティが返される．正常なら200が返ってくる
@@ -62,6 +60,14 @@ export default {
     })
     .finally(() => (this.loading = false))
   },
+  // windowをクリックしたとき、自分自身と子孫がターゲットでないならchild-eventをemitする
+  // methods: {
+  //   hoge() {
+  //     if (!this.$el.contains(e.target)){
+  //       this.$emit("child-event")
+  //     }
+  //   }
+  // },
 }
 </script>
 

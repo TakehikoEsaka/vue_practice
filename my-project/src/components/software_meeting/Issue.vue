@@ -5,7 +5,7 @@
     <div v-else>
         <table class="issue_table">
             <thead>
-            <tr>
+            <tr> <!-- table rowの事で表を作るのに使われる -->
                 <th class="id">id</th>
                 <th class="title">title</th>
                 <th class="state">state</th>
@@ -22,11 +22,12 @@
                 <td v-else> </td>
                 <td> {{ _info.start_date }} </td>
                 <td> {{ _info.due_date }} </td>
-                <td v-if="_info.assignees.length > 0">{{ _info.assignees[0].name }}</td>
+                <td v-if="_info.assignees.length > 0">{{ _info.assignees[0].name }}</td> <!-- 値が入っている時というif文は長さで判定する-->
             </tr>
             </tbody>
     </table>
     </div>
+  
   </div>
 </template>
 
@@ -55,11 +56,9 @@ export default {
       }
     })
     .then(response => {
-      // APIサーバーでresの部分が返ってくる. (mock.jsを参考にすると分かりやすい)
-      // chromeのdev toolのconsole画面で確認出来る.
-      console.log(response.headers) // resのheadersプロパティが返される
-      console.log(response.data) // resのdataプロパティが返される
-      console.log(response.status) // resのstatusプロパティが返される．正常なら200が返ってくる
+      console.log(response.headers) 
+      console.log(response.data)
+      console.log(response.status) 
       this.info = response.data
     })
     .catch(err => {
@@ -71,7 +70,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h4 {
   margin: 40px 0 0;

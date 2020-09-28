@@ -1,33 +1,31 @@
-// ここにhtmlを記載
-// 本で言う所のvue.jsコンテナに対応
+// htmlを記載(本で言う所のvue.jsコンテナに対応)
 <template>
   <div id="app">
-    <myheader></myheader>
     <img alt="Vue logo" src="./assets/logo.png">
-    <Edits />
+    <!-- チュートリアル -->
+    <Todo />
+    
+    <!-- 開発用 -->
     <Projects />
+
   </div>
 </template>
 
-// ここにjavascriptを記載
-// 本で言う所のコンテナのテンプレートに対応
+// javascriptを記載(本で言う所のコンテナのテンプレートに対応)
 <script>
-import Projects from './components/Projects.vue'
-import myheader from './components/myheader.vue'
-import Edits from './components/Edits.vue'
+import Todo from "./components/tutorial/Todo.vue"
+import Projects from './components/software_meeting/Projects.vue'
 
 export default {
-  name: 'App', // コンポーネントにも名前がつけれる.exportはこれでするのでimportする時は合わせる必要あり
+  name: 'App',
   components: {
-    Edits,
+    Todo,
     Projects,
-    myheader
   }
 }
 </script>
 
-// ここにcssを記載
-// vueごとにcssを管理出来る(コンポーネントスコープCSS)から便利
+<!-- app全体に対して定義するcssは以下のように書く-->
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
