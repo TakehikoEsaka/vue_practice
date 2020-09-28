@@ -1,3 +1,7 @@
+# 基礎知識
+DOMとは; Document Object Modelの略．JSからHTMLを操作するためのAPI
+
+
 # vue_practice
 
 保存用
